@@ -51,3 +51,4 @@ extension RichTextContext {
         styles[style] = val
     }
 }
+
