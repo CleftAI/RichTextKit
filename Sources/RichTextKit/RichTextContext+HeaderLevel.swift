@@ -11,7 +11,7 @@ public extension RichTextContext {
 
     /// Get a binding for a certain style.
     @preconcurrency @MainActor
-    func binding(for style: RichTextHeaderLevel) -> Binding<RichTextHeaderLevel> {
+    func bindingHeaderLevel() -> Binding<RichTextHeaderLevel> {
         Binding(
             get: { self.headerLevel },
             set: { self.setHeaderLevel($0) }
@@ -21,12 +21,9 @@ public extension RichTextContext {
     /// Set whether or not the context has a certain style.
     func setHeaderLevel(
         _ level: RichTextHeaderLevel) {
-        guard headerLevel != level else { return }
         actionPublisher.send(.setHeaderLevel(level))
         setStyleInternal(level)
     }
-
-
 }
 
 extension RichTextContext {
