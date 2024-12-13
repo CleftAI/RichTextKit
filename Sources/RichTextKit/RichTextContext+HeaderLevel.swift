@@ -5,7 +5,8 @@
 //  Created by Rizwana Desai on 13/12/24.
 //
 
-import Foundation
+import SwiftUI
+
 public extension RichTextContext {
 
     /// Get a binding for a certain style.
