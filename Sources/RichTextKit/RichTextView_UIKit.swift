@@ -174,7 +174,7 @@ open class RichTextView: UITextView, RichTextViewComponent {
         }
         
         // Try to get rich text data
-        if let rtfData = pasteboard.data(forType: .rtf),
+        if let rtfData = pasteboard.data(forPasteboardType: UTType.rtf.identifier),
            let rtfString = try? NSAttributedString(data: rtfData, documentAttributes: nil) {
             let attributedString = NSMutableAttributedString(attributedString: rtfString)
             
@@ -195,8 +195,8 @@ open class RichTextView: UITextView, RichTextViewComponent {
                         let oldTraits = oldFont.fontDescriptor.symbolicTraits
                         
                         // Create a new font descriptor with the same traits
-                        let newDesc = defaultFont.fontDescriptor.withSymbolicTraits(oldTraits)
-                        if let newFont = UIFont(descriptor: newDesc, size: defaultFont.pointSize) {
+                        if let newDesc = defaultFont.fontDescriptor.withSymbolicTraits(oldTraits) {
+                            let newFont = UIFont(descriptor: newDesc, size: defaultFont.pointSize)
                             newAttrs[.font] = newFont
                         } else {
                             newAttrs[.font] = defaultFont
@@ -217,7 +217,7 @@ open class RichTextView: UITextView, RichTextViewComponent {
                 attributedString.setAttributes(newAttrs, range: subrange)
             }
             
-            insertText(attributedString, replacementRange: selectedRange)
+            insertText(attributedString.string)
             return
         }
         
@@ -254,13 +254,13 @@ open class RichTextView: UITextView, RichTextViewComponent {
             }
             
             // Insert the attributed string
-            insertText(attributedString, replacementRange: selectedRange)
+            insertText(attributedString.string)
             
             // Update list item numbers
-            if let textStorage = textStorage {
-                let fullRange = NSRange(location: 0, length: textStorage.length)
-                updateListItemNumbers(in: fullRange)
-            }
+            
+            let fullRange = NSRange(location: 0, length: textStorage.length)
+            updateListItemNumbers(in: fullRange)
+            
             return
         }
         
@@ -435,7 +435,6 @@ open class RichTextView: UITextView, RichTextViewComponent {
     #endif
 
     // MARK: - List Support
-
     open override func insertText(_ text: String) {
         // Handle return key for lists
         if text == "\n" {
@@ -490,7 +489,7 @@ open class RichTextView: UITextView, RichTextViewComponent {
                 }
                 
                 // Update all following list item numbers
-                updateListItemNumbers(in: NSRange(location: newLineRange.location, length: (textStorage?.length ?? 0) - newLineRange.location))
+                updateListItemNumbers(in: NSRange(location: newLineRange.location, length: (textStorage.length ?? 0) - newLineRange.location))
                 
                 return
             }
@@ -505,13 +504,10 @@ open class RichTextView: UITextView, RichTextViewComponent {
     }
     
     private func drawListMarkers(in rect: CGRect) {
-        guard let layoutManager = layoutManager,
-              let textContainer = textContainer else { return }
-        
-        layoutManager.enumerateLineFragments(forGlyphRange: layoutManager.glyphRange(forBoundingRect: rect, in: textContainer)) { (lineRect, usedRect, textContainer, glyphRange, stop) in
+        layoutManager.enumerateLineFragments(forGlyphRange: layoutManager.glyphRange(forBoundingRect: rect, in: textContainer)) { [unowned self] (lineRect, usedRect, textContainer, glyphRange, stop) in
             
             let characterRange = layoutManager.characterRange(forGlyphRange: glyphRange, actualGlyphRange: nil)
-            let attributes = self.textStorage?.attributes(at: characterRange.location, effectiveRange: nil) ?? [:]
+            let attributes = self.textStorage.attributes(at: characterRange.location, effectiveRange: nil) ?? [:]
             
             guard let listStyle = attributes[.listStyle] as? RichTextListStyle,
                   listStyle != .none else { return }
@@ -543,8 +539,6 @@ open class RichTextView: UITextView, RichTextViewComponent {
     }
     
     private func updateListItemNumbers(in range: NSRange) {
-        guard let textStorage = textStorage else { return }
-        
         var currentNumber = 1
         var location = range.location
         
@@ -561,6 +555,10 @@ open class RichTextView: UITextView, RichTextViewComponent {
                 location += 1
             }
         }
+    }
+    
+    func setCustomToolButtonFrameOrigin() {
+        
     }
 }
 
