@@ -224,7 +224,7 @@ open class RichTextView: NSTextView, RichTextViewComponent {
                 let isItalic = traits?.isItalic ?? fontManager.traits(of: oldFont).contains(.italicFontMask)
                 
                 // Start with standard font at the original size
-                var newFont = NSFont.standardRichTextFont.withSize(oldFont.pointSize)
+                var newFont = NSFont(name: FontRepresentable.selectedFontName, size: oldFont.pointSize) ?? NSFont.systemFont(ofSize: oldFont.pointSize)
                 
                 // Apply bold if needed
                 if isBold {
@@ -294,7 +294,7 @@ open class RichTextView: NSTextView, RichTextViewComponent {
                 let isItalic = traits?.isItalic ?? fontManager.traits(of: font).contains(.italicFontMask)
                 
                 // Create a new font with the mapped size but preserve bold/italic
-                var newFont = NSFont(name: "New York", size: mappedSize) ?? NSFont.systemFont(ofSize: mappedSize)
+                var newFont = NSFont(name: FontRepresentable.selectedFontName, size: mappedSize) ?? NSFont.systemFont(ofSize: mappedSize)
                 
                 // Apply bold if needed
                 if isBold {
@@ -310,7 +310,7 @@ open class RichTextView: NSTextView, RichTextViewComponent {
                 attributedString.addAttribute(.font, value: newFont, range: subrange)
             } else {
                 mappedSize = 16.0 // Default to paragraph size
-                let defaultFont = NSFont(name: "New York", size: mappedSize) ?? NSFont.systemFont(ofSize: mappedSize)
+                let defaultFont = NSFont(name: FontRepresentable.selectedFontName, size: mappedSize) ?? NSFont.systemFont(ofSize: mappedSize)
                 attributedString.addAttribute(.font, value: defaultFont, range: subrange)
             }
             
@@ -324,7 +324,7 @@ open class RichTextView: NSTextView, RichTextViewComponent {
     }
     
     private func createDefaultAttributedString(from string: String) -> NSAttributedString {
-        let defaultFont = NSFont(name: "New York", size: 16.0) ?? NSFont.systemFont(ofSize: 16.0)
+        let defaultFont = FontRepresentable.standardRichTextFont.withSize(16.0)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = mapLineSpacing(16.0) // Default line spacing
         paragraphStyle.paragraphSpacing = 10
