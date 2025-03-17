@@ -1143,6 +1143,17 @@ open class RichTextView: NSTextView, RichTextViewComponent {
         undoManager?.endUndoGrouping()
         isPerformingUndoOperation = false
     }
+
+    open override func keyDown(with event: NSEvent) {
+        super.keyDown(with: event)
+
+        if event.keyCode == 36 { // Return key
+            DispatchQueue.main.async {
+                print("Cursor moved after Enter: \(self.selectedRange())")
+            }
+        }
+    }
+
 }
 
 // MARK: - Public Extensions
