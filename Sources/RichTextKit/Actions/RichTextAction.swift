@@ -93,6 +93,8 @@ public enum RichTextAction: Identifiable, Equatable, RichTextLabelValue {
 
     case updateFontScale(FontScalingOption)
 
+    case setLink(url: String, text: String? = nil, isURL: Bool)
+
 }
 
 public extension RichTextAction {
@@ -189,6 +191,8 @@ public extension RichTextAction {
             //TODO: change key
                 .highlightingStyle
         case .updateFontScale(let level):
+                .highlightingStyle
+        case .setLink(url: let url, text: let text, isURL: let isURL):
                 .highlightingStyle
         }
     }

@@ -78,6 +78,8 @@ extension RichTextCoordinator {
             textView.setHeaderLevel(level)
         case .updateFontScale(let scale):
             textView.updateFontScale(to: scale)
+        case .setLink(url: let url, text: let text, isURL: let isURL):
+            context.setLink(url: url, text: text, isURL: isURL, selectedRange: textView.selectedRange())
         }
         textView.setCustomToolButtonFrameOrigin()
     }
