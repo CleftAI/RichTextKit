@@ -52,7 +52,9 @@ private extension RichTextCoordinator {
 
     func subscribeToScalingOption() {
         subscribe(to: context.$selectedFontScale) { [weak self] in
+            #if os(macOS)
             self?.textView.updateFontScale(to: $0)
+            #endif
         }
     }
 
