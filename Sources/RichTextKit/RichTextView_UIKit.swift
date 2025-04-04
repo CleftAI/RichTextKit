@@ -257,7 +257,6 @@ open class RichTextView: UITextView, RichTextViewComponent {
             insertText(attributedString.string)
             
             // Update list item numbers
-            
             let fullRange = NSRange(location: 0, length: textStorage.length)
             updateListItemNumbers(in: fullRange)
             
