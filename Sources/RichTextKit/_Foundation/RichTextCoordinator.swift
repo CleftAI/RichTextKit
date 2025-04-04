@@ -38,7 +38,11 @@ open class RichTextCoordinator: NSObject {
         self.textView = textView
         self.context = richTextContext
         super.init()
+        #if os(macOS)
         self.textView.delegate = self
+        #elseif os(iOS) || os(tvOS) || os(visionOS)
+        self.textView.delegate = TextViewDelegate(self)
+        #endif
         subscribeToUserActions()
     }
 
@@ -70,28 +74,6 @@ open class RichTextCoordinator: NSObject {
     /// highlighted range was set.
      var highlightedRangeOriginalForegroundColor: ColorRepresentable?
 
-    #if canImport(UIKit)
-
-    // MARK: - UITextViewDelegate
-
-    open func textViewDidBeginEditing(_ textView: UITextView) {
-        context.isEditingText = true
-    }
-
-    open func textViewDidChange(_ textView: UITextView) {
-        syncWithTextView()
-    }
-
-    open func textViewDidChangeSelection(_ textView: UITextView) {
-        syncWithTextView()
-    }
-
-    open func textViewDidEndEditing(_ textView: UITextView) {
-        syncWithTextView()
-        context.isEditingText = false
-    }
-    #endif
-
     #if canImport(AppKit) && !targetEnvironment(macCatalyst)
 
     // MARK: - NSTextViewDelegate
@@ -120,7 +102,29 @@ open class RichTextCoordinator: NSObject {
 #if iOS || os(tvOS) || os(visionOS)
 import UIKit
 
-extension RichTextCoordinator: UITextViewDelegate {}
+final class TextViewDelegate: NSObject, UITextViewDelegate {
+    private let coordinator: RichTextCoordinator
+    
+    init(_ coordinator: RichTextCoordinator) {
+        self.coordinator = coordinator
+    }
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        coordinator.context.isEditingText = true
+    }
+
+    func textViewDidChange(_ textView: UITextView) {
+        coordinator.syncWithTextView()
+    }
+
+    func textViewDidChangeSelection(_ textView: UITextView) {
+        coordinator.syncWithTextView()
+    }
+
+    func textViewDidEndEditing(_ textView: UITextView) {
+        coordinator.syncWithTextView()
+        coordinator.context.isEditingText = false
+    }
+}
 
 #elseif macOS
 import AppKit
