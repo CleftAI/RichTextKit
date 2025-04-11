@@ -79,7 +79,7 @@ extension RichTextCoordinator {
         case .updateFontScale(let scale):
             textView.updateFontScale(to: scale)
         case .scrollToRange(let range):
-            textView.scrollRangeToVisible(range)
+            textView.scroll(to: range)
         }
         textView.setCustomToolButtonFrameOrigin()
     }

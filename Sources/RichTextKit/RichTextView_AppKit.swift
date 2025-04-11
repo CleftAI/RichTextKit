@@ -1014,6 +1014,15 @@ open class RichTextView: NSTextView, RichTextViewComponent {
     /// Scroll to a certain range.
     open func scroll(to range: NSRange) {
         scrollRangeToVisible(range)
+        // Ensure we scroll to the bottom by scrolling a bit more
+        if let scrollView = enclosingScrollView {
+            let visibleRect = scrollView.documentVisibleRect
+            let contentRect = scrollView.documentView?.frame ?? .zero
+            let bottomOffset = contentRect.maxY - visibleRect.maxY
+            if bottomOffset > 0 {
+                scrollView.contentView.scroll(to: NSPoint(x: 0, y: contentRect.maxY - visibleRect.height))
+            }
+        }
     }
 
     /// Set the rich text in the text view.
