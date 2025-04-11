@@ -78,6 +78,8 @@ extension RichTextCoordinator {
             textView.setHeaderLevel(level)
         case .updateFontScale(let scale):
             textView.updateFontScale(to: scale)
+        case .scrollToRange(let range):
+            textView.scrollRangeToVisible(range)
         }
         textView.setCustomToolButtonFrameOrigin()
     }
