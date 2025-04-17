@@ -94,6 +94,8 @@ public enum RichTextAction: Identifiable, Equatable, RichTextLabelValue {
     case updateFontScale(FontScalingOption)
 
     case scrollToRange(_ range: NSRange)
+
+    case registerUndoForEdits(_ text: NSAttributedString)
 }
 
 public extension RichTextAction {

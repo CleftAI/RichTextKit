@@ -47,6 +47,7 @@ public extension RichTextContext {
         case .setHeaderLevel: true
         case .updateFontScale(_): true
         case .scrollToRange(_): true
+        case .registerUndoForEdits(_): true
         }
     }
 

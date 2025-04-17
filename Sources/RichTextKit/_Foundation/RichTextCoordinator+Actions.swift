@@ -80,8 +80,19 @@ extension RichTextCoordinator {
             textView.updateFontScale(to: scale)
         case .scrollToRange(let range):
             textView.scroll(to: range)
+        case .registerUndoForEdits(let text):
+            registerUndoForEdit(text)
         }
         textView.setCustomToolButtonFrameOrigin()
+    }
+
+    func registerUndoForEdit(_ text: NSAttributedString) {
+        let undoManager = textView.undoManager
+        let savedRichText = text 
+        undoManager?.registerUndo(withTarget: textView, handler: {
+            $0.setRichText(savedRichText)
+        })
+        undoManager?.setActionName("Edits")
     }
 }
 
