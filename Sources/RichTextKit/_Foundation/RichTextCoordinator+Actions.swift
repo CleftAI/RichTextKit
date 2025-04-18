@@ -103,6 +103,7 @@ extension RichTextCoordinator {
         undoManager?.beginUndoGrouping()
         undoManager?.registerUndo(withTarget: textView, handler: {
             $0.setRichText(savedRichText)
+            self.syncContextWithTextView()
         })
         undoManager?.setActionName("Edits")
         undoManager?.endUndoGrouping()
