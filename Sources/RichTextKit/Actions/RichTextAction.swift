@@ -93,6 +93,9 @@ public enum RichTextAction: Identifiable, Equatable, RichTextLabelValue {
 
     case updateFontScale(FontScalingOption)
 
+    case scrollToRange(_ range: NSRange)
+
+    case registerUndoForEdits(_ text: NSAttributedString)
 }
 
 public extension RichTextAction {
@@ -185,11 +188,8 @@ public extension RichTextAction {
         case .stepSuperscript(let steps): .actionStepSuperscript(steps)
         case .toggleStyle(let style): style.titleKey
         case .undoLatestChange: .actionUndoLatestChange
-        case .setHeaderLevel(let level):
-            //TODO: change key
-                .highlightingStyle
-        case .updateFontScale(let level):
-                .highlightingStyle
+        default:
+            .highlightingStyle
         }
     }
 }

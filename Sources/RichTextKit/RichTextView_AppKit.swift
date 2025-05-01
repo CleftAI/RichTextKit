@@ -1013,7 +1013,9 @@ open class RichTextView: NSTextView, RichTextViewComponent {
 
     /// Scroll to a certain range.
     open func scroll(to range: NSRange) {
-        scrollRangeToVisible(range)
+        DispatchQueue.main.async{
+            self.scrollRangeToVisible(range)
+        }
     }
 
     /// Set the rich text in the text view.

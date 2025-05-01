@@ -13,6 +13,8 @@ extension RichTextCoordinator {
 
     func handle(_ action: RichTextAction?) {
         guard let action else { return }
+
+        
         switch action {
         case .copy: textView.copySelection()
         case .deleteSelectedText:
@@ -50,10 +52,14 @@ extension RichTextCoordinator {
             textView.highlightingStyle = style
         case .setStyle(let style, let newValue):
             let undoManager = textView.undoManager
+            // Begin undo grouping for all actions
+            undoManager?.beginUndoGrouping()
             undoManager?.registerUndo(withTarget: textView, handler: {
                 $0.toggleRichTextStyle(style)
             })
             undoManager?.setActionName(style.title)
+            // End undo grouping
+            undoManager?.endUndoGrouping()
             setStyle(style, to: newValue)
         case .stepFontSize(let points):
             textView.stepRichTextFontSize(points: points)
@@ -66,10 +72,14 @@ extension RichTextCoordinator {
             textView.stepRichTextSuperscriptLevel(points: points)
         case .toggleStyle(let style):
             let undoManager = textView.undoManager
+            // Begin undo grouping for all actions
+            undoManager?.beginUndoGrouping()
             undoManager?.registerUndo(withTarget: textView, handler: {
                 $0.toggleRichTextStyle(style)
             })
             undoManager?.setActionName(style.title)
+            // End undo grouping
+            undoManager?.endUndoGrouping()
             textView.toggleRichTextStyle(style)
         case .undoLatestChange:
             textView.undoLatestChange()
@@ -78,8 +88,25 @@ extension RichTextCoordinator {
             textView.setHeaderLevel(level)
         case .updateFontScale(let scale):
             textView.updateFontScale(to: scale)
+        case .scrollToRange(let range):
+            textView.scroll(to: range)
+        case .registerUndoForEdits(let text):
+            registerUndoForEdit(text)
         }
+        
         textView.setCustomToolButtonFrameOrigin()
+    }
+
+    func registerUndoForEdit(_ text: NSAttributedString) {
+        let undoManager = textView.undoManager
+        let savedRichText = text 
+        undoManager?.beginUndoGrouping()
+        undoManager?.registerUndo(withTarget: textView, handler: {
+            $0.setRichText(savedRichText)
+            self.syncContextWithTextView()
+        })
+        undoManager?.setActionName("Edits")
+        undoManager?.endUndoGrouping()
     }
 }
 

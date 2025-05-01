@@ -325,7 +325,14 @@ open class RichTextView: UITextView, RichTextViewComponent {
     /// Scroll to a certain range.
     open func scroll(to range: NSRange) {
         let caret = frame(of: range)
-        scrollRectToVisible(caret, animated: true)
+        // Ensure we scroll to the bottom by adding some padding
+        let paddedRect = CGRect(
+            x: caret.minX,
+            y: caret.minY,
+            width: caret.width,
+            height: caret.height + contentInset.bottom
+        )
+        scrollRectToVisible(paddedRect, animated: true)
     }
 
     /// Set the rich text in the text view.
