@@ -15,7 +15,12 @@ struct DemoEditorScreen: View {
 
     @State private var isInspectorPresented = false
 
-    @StateObject var context = RichTextContext()
+    @StateObject var context = DemoEditorScreen.context
+
+    static var context: RichTextContext {
+        let richTextContext = RichTextContext()
+        return richTextContext
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -27,6 +32,9 @@ struct DemoEditorScreen: View {
                 context: context
             ) {
                 $0.textContentInset = CGSize(width: 30, height: 30)
+            }
+            .onAIChatAction { selectedText in
+                print("Selected Text \(selectedText)")
             }
             // Use this to just view the text:
             // RichTextViewer(document.text)
@@ -66,6 +74,7 @@ struct DemoEditorScreen: View {
         )
         .richTextFormatToolbarConfig(.init(colorPickers: []))
         .viewDebug()
+
     }
 }
 

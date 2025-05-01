@@ -101,10 +101,12 @@ open class RichTextCoordinator: NSObject {
     }
 
     open func textDidChange(_ notification: Notification) {
+        guard !context.isApplyingMarkdown else { return }
         syncWithTextView()
     }
 
     open func textViewDidChangeSelection(_ notification: Notification) {
+        guard !context.isApplyingMarkdown else { return }
         replaceCurrentAttributesIfNeeded()
         syncWithTextView()
     }
@@ -123,7 +125,32 @@ extension RichTextCoordinator: UITextViewDelegate {}
 #elseif macOS
 import AppKit
 
-extension RichTextCoordinator: NSTextViewDelegate {}
+extension RichTextCoordinator: NSTextViewDelegate {
+
+    public func textView(_ textView: NSTextView, clickedOnLink link: Any, at charIndex: Int) -> Bool {
+        guard let linkValue = (link as? URL)?.absoluteString else { return false }
+
+        if linkValue.hasPrefix("note:") {
+            let noteID = linkValue.replacingOccurrences(of: "note:", with: "")
+            self.textView.openNote(noteID)
+            return true
+        } else if linkValue.hasPrefix("section:") {
+            let sectionID = linkValue.replacingOccurrences(of: "section:", with: "")
+            self.textView.openSection(sectionID)
+            return true
+        }
+        
+        return false // Allow default handling for normal URLs
+    }
+
+}
+
+extension RichTextCoordinator: ZoomFactorDelegate {
+    func customZoomFactorDidChanged(_ factor: Double?) {
+//        context.customZoomFactor = factor
+    }
+}
+
 #endif
 
 // MARK: - Public Extensions
@@ -170,17 +197,23 @@ extension RichTextCoordinator {
 
     /// Sync the rich text context with the text view.
     func syncContextWithTextViewAfterDelay() {
+        guard !context.isApplyingMarkdown else {
+            return
+        }
+
         let font = textView.richTextFont ?? .standardRichTextFont
         sync(&context.attributedString, with: textView.attributedString)
         sync(&context.selectedRange, with: textView.selectedRange)
         sync(&context.canCopy, with: textView.hasSelectedRange)
-        sync(&context.canRedoLatestChange, with: textView.undoManager?.canRedo ?? false)
-        sync(&context.canUndoLatestChange, with: textView.undoManager?.canUndo ?? false)
+        sync(&context.canRedoLatestChange, with: textView.undoManager?.canRedo ?? true)
+        sync(&context.canUndoLatestChange, with: textView.undoManager?.canUndo ?? true)
         sync(&context.fontName, with: font.fontName)
         sync(&context.fontSize, with: font.pointSize)
         sync(&context.isEditingText, with: textView.isFirstResponder)
+        sync(&context.headerLevel, with: textView.richTextHeaderLevel ?? .paragraph)
+        // sync(&context.lineSpacing, with: textView.richTextLineSpacing ?? 10.0)   TODO: Not done yet
         sync(&context.paragraphStyle, with: textView.richTextParagraphStyle ?? .defaultMutable)
-
+        sync(&context.textAlignment, with: textView.richTextAlignment ?? .left)
         RichTextColor.allCases.forEach {
             if let color = textView.richTextColor($0) {
                 context.setColor($0, to: color)
@@ -218,6 +251,10 @@ extension RichTextCoordinator {
         #if macOS
         if textView.hasSelectedRange { return }
         let attributes = textView.richTextAttributes
+        // Preserve header level if it exists
+        if let headerLevel = attributes[.headerLevel] as? RichTextHeaderLevel {
+            textView.setHeaderLevel(headerLevel)
+        }
         textView.setRichTextAttributes(attributes)
         #endif
     }
@@ -231,6 +268,10 @@ extension RichTextCoordinator {
         #if macOS
         if textView.hasSelectedRange { return }
         let attributes = textView.richTextAttributes
+        // Preserve header level if it exists
+        if let headerLevel = attributes[.headerLevel] as? RichTextHeaderLevel {
+            textView.setHeaderLevel(headerLevel)
+        }
         textView.setNewRichTextAttributes(attributes)
         #endif
     }

@@ -17,11 +17,15 @@ public extension RichTextViewComponent {
     @available(*, deprecated, message: "Use setRichTextParagraphStyleValue(\\.alignment, ...) instead.")
     /// Set the text alignment.
     func setRichTextAlignment(_ alignment: RichTextAlignment) {
+        // Only apply changes if explicitly requested and different from current
         if richTextAlignment == alignment { return }
+        
+        registerUndo()
         let style = NSMutableParagraphStyle(
             from: richTextParagraphStyle,
             alignment: alignment
         )
         setRichTextParagraphStyle(style)
+
     }
 }

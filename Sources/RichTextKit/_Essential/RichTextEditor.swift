@@ -127,6 +127,8 @@ public struct RichTextEditor: ViewRepresentable {
         textView.setup(with: text.wrappedValue, format: format)
         textView.configuration = config
         textView.theme = style
+        textView.usesFindBar = true
+        textView.zoomTo(factor: self.context.selectedFontScale.factor)
         viewConfiguration(textView)
         return scrollView
     }
@@ -163,5 +165,63 @@ public extension RichTextEditor {
     var mutableAttributedString: NSMutableAttributedString? {
         textView.mutableAttributedString
     }
+}
+
+public extension RichTextEditor {
+
+    public func onAIChatAction(_ completion: @escaping (String) -> ()) -> RichTextEditor {
+        let editor = self
+#if os(macOS)
+        editor.textView.onAIChatBtnAction = completion
+#endif
+        // TODO: Other OS call back
+        return editor
+    }
+
+    public func onEditAction(_ completion: @escaping (String) -> ()) -> RichTextEditor {
+        let editor = self
+#if os(macOS)
+        editor.textView.onEditBtnAction = completion
+#endif
+        // TODO: Other OS call back
+        return editor
+    }
+
+    public func onRecordAction(_ completion: @escaping () -> ()) -> RichTextEditor {
+        let editor = self
+#if os(macOS)
+        editor.textView.onRecordBtnAction = completion
+#endif
+        // TODO: Other OS call back
+        return editor
+    }
+
+    public func onFocus(_ completion: @escaping () -> ()) -> RichTextEditor {
+        let editor = self
+#if os(macOS)
+        editor.textView.onFocus = completion
+#endif
+        // TODO: Other OS call back
+        return editor
+    }
+
+    public func openNote(_ completion: @escaping (String) -> ()) -> RichTextEditor {
+        let editor = self
+#if os(macOS)
+        editor.textView.openNote = completion
+#endif
+        // TODO: Other OS call back
+        return editor
+    }
+
+    public func openSection(_ completion: @escaping (String) -> ()) -> RichTextEditor {
+        let editor = self
+#if os(macOS)
+        editor.textView.openSection = completion
+#endif
+        // TODO: Other OS call back
+        return editor
+    }
+
 }
 #endif

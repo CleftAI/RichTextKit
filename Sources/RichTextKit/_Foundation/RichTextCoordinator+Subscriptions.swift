@@ -27,6 +27,9 @@ extension RichTextCoordinator {
         subscribeToContextParagraphStyle()
         subscribeToContextIsEditable()
         subscribeToContextIsEditingText()
+        subscribeToHeaderLevel()
+//        subscribeToAlignment()
+        subscribeToScalingOption()
     }
 }
 
@@ -40,6 +43,25 @@ private extension RichTextCoordinator {
             .sink(receiveValue: action)
             .store(in: &cancellables)
     }
+
+    func subscribeToHeaderLevel() {
+        subscribe(to: context.$headerLevel) { [weak self] in
+            self?.textView.setHeaderLevel($0)
+        }
+    }
+
+    func subscribeToScalingOption() {
+        subscribe(to: context.$selectedFontScale) { [weak self] in
+            self?.textView.updateFontScale(to: $0)
+        }
+    }
+
+    // FIXME: Richtextkit updates issue
+//    func subscribeToAlignment() {
+//        subscribe(to: context.$textAlignment) { [weak self] in
+//            self?.handle(.setAlignment($0))
+//        }
+//    }
 
     func subscribeToContextFontName() {
         subscribe(to: context.$fontName) { [weak self] in

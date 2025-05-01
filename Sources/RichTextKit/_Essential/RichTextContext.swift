@@ -46,11 +46,22 @@ public class RichTextContext: ObservableObject {
 
     // MARK: - Bindable & Settable Properies
 
+    /// The current header level..
+    @Published
+    public var headerLevel: RichTextHeaderLevel = .paragraph
+
     /// Whether or not the rich text editor is editable.
     @Published public var isEditable = true
 
     /// Whether or not the text is currently being edited.
-    @Published public var isEditingText = false
+    @Published
+    public var isEditingText = false
+
+    /// Flag to indicate markdown application state
+    @Published public var isApplyingMarkdown: Bool = false
+
+    @Published
+    public var selectedFontScale: FontScalingOption = .defaultFont
 
     /// The current font name.
     @Published public var fontName = RichTextFont.PickerFont.all.first?.fontName ?? ""
