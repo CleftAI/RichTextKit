@@ -28,17 +28,20 @@ extension RichTextFormatToolbarBase {
 
 extension RichTextFormatToolbarBase {
 
-    @ViewBuilder
     func alignmentPicker(
-        value: Binding<RichTextAlignment>
+        for context: RichTextContext
     ) -> some View {
-        if !config.alignments.isEmpty {
-            RichTextAlignment.Picker(
-                selection: value,
-                values: config.alignments
-            )
-            .pickerStyle(.segmented)
+        Picker(
+            forValue: \.alignment,
+            in: context,
+            values: config.alignments
+        ) {
+            Text(RTKL10n.textAlignment.text)
+        } valueLabel: { val in
+            val.defaultLabel
         }
+        .labelStyle(.iconOnly)
+        .pickerStyle(.segmented)
     }
 
     @ViewBuilder
