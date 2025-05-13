@@ -127,7 +127,7 @@ public extension RichTextView {
     private func handleInlineMarkdown(fullText: String, selectedRange: NSRange, lineOffset: Int) -> NSRange? {
         let patterns = ["\\*\\*(.+?)\\*\\*", "(?<!\\*)\\*(?!\\*)(.+?)(?<!\\*)\\*(?!\\*)", "_(.+?)_"]
         var replacements: [(range: NSRange, content: String, attributes: [NSAttributedString.Key: Any])] = []
-        var lastReplacementRange: NSRange?
+        var lastReplacementEnd: Int? = nil
 
         for (index, pattern) in patterns.enumerated() {
             let regex = try? NSRegularExpression(pattern: pattern, options: [])
@@ -158,7 +158,7 @@ public extension RichTextView {
                 }
 
                 replacements.append((adjustedMarkdownRange, content, attributes))
-                lastReplacementRange = NSRange(location: adjustedMarkdownRange.location, length: content.count)
+                lastReplacementEnd = adjustedMarkdownRange.location + content.count
             }
         }
 
@@ -168,7 +168,12 @@ public extension RichTextView {
             textStorage?.addAttributes(replacement.attributes, range: NSRange(location: replacement.range.location, length: replacement.content.count))
         }
 
-        return lastReplacementRange
+        // Place caret at the end of the last formatted segment, or return nil if no replacements
+        if let end = lastReplacementEnd {
+            return NSRange(location: end, length: 0)
+        } else {
+            return nil
+        }
     }
 
     private func setTypingAttributes(forHeadingLevel level: Int) {
