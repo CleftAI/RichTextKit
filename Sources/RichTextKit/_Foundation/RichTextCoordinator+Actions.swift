@@ -87,14 +87,20 @@ extension RichTextCoordinator {
         case .setHeaderLevel(let level):
             textView.setHeaderLevel(level)
         case .updateFontScale(let scale):
+#if os(macOS)
             textView.updateFontScale(to: scale)
+#elseif os(iOS)
+            //TODO: 
+            print("Implementation Pending")
+#endif
         case .scrollToRange(let range):
             textView.scroll(to: range)
         case .registerUndoForEdits(let text):
             registerUndoForEdit(text)
         }
-        
+#if os(macOS)
         textView.setCustomToolButtonFrameOrigin()
+#endif
     }
 
     func registerUndoForEdit(_ text: NSAttributedString) {
