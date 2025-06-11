@@ -36,6 +36,9 @@ struct DemoEditorScreen: View {
             .onAIChatAction { selectedText in
                 print("Selected Text \(selectedText)")
             }
+            .onChange(of: document.text) { oldValue, newValue in
+                print("@@ onChange new value \(document.text)")
+            }
             // Use this to just view the text:
             // RichTextViewer(document.text)
             #if os(iOS)
