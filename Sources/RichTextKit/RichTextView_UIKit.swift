@@ -657,4 +657,10 @@ public extension RichTextView {
         textStorage
     }
 }
+
+public extension RichTextView {
+    func updateFontScale(to scale: FontScalingOption) {
+        self.transform = CGAffineTransform(scaleX: scale.factor, y: scale.factor)
+    }
+}
 #endif
