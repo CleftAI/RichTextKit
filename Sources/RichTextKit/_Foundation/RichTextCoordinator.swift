@@ -120,7 +120,28 @@ open class RichTextCoordinator: NSObject {
 #if iOS || os(tvOS) || os(visionOS)
 import UIKit
 
-extension RichTextCoordinator: UITextViewDelegate {}
+extension RichTextCoordinator: UITextViewDelegate {
+    
+    public func textView(_ textView: UITextView,
+                  shouldInteractWith URL: URL,
+                  in characterRange: NSRange,
+                  interaction: UITextItemInteraction) -> Bool {
+
+        let linkValue = URL.absoluteString
+
+        if linkValue.hasPrefix("note:") {
+            let noteID = linkValue.replacingOccurrences(of: "note:", with: "")
+            self.textView.openNote(noteID)
+            return false // Prevent default handling
+        } else if linkValue.hasPrefix("section:") {
+            let sectionID = linkValue.replacingOccurrences(of: "section:", with: "")
+            self.textView.openSection(sectionID)
+            return false // Prevent default handling
+        }
+
+        return true // Allow default handling for normal URLs
+    }
+}
 
 #elseif macOS
 import AppKit
