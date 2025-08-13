@@ -207,17 +207,13 @@ public extension RichTextEditor {
 
     public func openNote(_ completion: @escaping (String) -> ()) -> RichTextEditor {
         let editor = self
-#if os(macOS)
         editor.textView.openNote = completion
-#endif
-        // TODO: Other OS call back
         return editor
     }
 
     public func openSection(_ completion: @escaping (String) -> ()) -> RichTextEditor {
         let editor = self
         editor.textView.openSection = completion
-        // TODO: Other OS call back
         return editor
     }
 
