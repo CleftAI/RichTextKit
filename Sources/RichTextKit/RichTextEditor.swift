@@ -216,9 +216,7 @@ public extension RichTextEditor {
 
     public func openSection(_ completion: @escaping (String) -> ()) -> RichTextEditor {
         let editor = self
-#if os(macOS)
         editor.textView.openSection = completion
-#endif
         // TODO: Other OS call back
         return editor
     }
