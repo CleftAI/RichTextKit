@@ -125,6 +125,8 @@ open class RichTextView: UITextView, RichTextViewComponent {
 
     /// Keeps track of the data format used by the view.
     private var richTextDataFormat: RichTextDataFormat = .archivedData
+    var openNote: (String) -> () = { _ in }
+    var openSection: (String) -> () = { _ in }
 
     // MARK: - Overrides
 
@@ -655,6 +657,12 @@ public extension RichTextView {
     /// Get the mutable rich text managed by the view.
     var mutableAttributedString: NSMutableAttributedString? {
         textStorage
+    }
+}
+
+public extension RichTextView {
+    func updateFontScale(to scale: FontScalingOption) {
+        self.transform = CGAffineTransform(scaleX: scale.factor, y: scale.factor)
     }
 }
 #endif
