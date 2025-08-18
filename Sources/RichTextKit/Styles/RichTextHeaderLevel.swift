@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftUICore
 
 /**
  This enum represents various rich text format style, such as paragraph,
