@@ -8,19 +8,15 @@
 
 import Foundation
 
-/**
- This protocol extends ``RichTextReader`` with functionality
- for reading attributes from the ``RichTextReader/richText``.
-
- The protocol is implemented by `NSAttributedString` as well
- as other types in the library.
-
- Note that this protocol used to have a lot of functionality
- for getting various attributes, styles, etc. However, since
- ``RichTextViewComponent`` needs more capabilities, we ended
- up with duplicated code where the reader had functions that
- weren't even used within the library.
- */
+/// This protocol extends the ``RichTextReader`` protocol to make any type
+/// that implements it able to get ``RichTextReader/richText`` attributes.
+///
+/// The protocol is implemented by `NSAttributedString` and other types in
+/// the library.
+///
+/// > Note: This protocol used to have a lot of functionality. This caused duplicated
+/// code since the ``RichTextViewComponent`` needed to do more. As such,
+/// this protocol is now limited in functionality.
 public protocol RichTextAttributeReader: RichTextReader {}
 
 extension NSAttributedString: RichTextAttributeReader {}

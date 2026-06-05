@@ -8,23 +8,22 @@
 
 import Foundation
 
-/**
- This export service can be used to export rich text content
- to files with a certain format.
-
- Files are by default written to the app document folder. It
- can be changed by providing another searchpath directory in
- the initializer.
- */
+/// This service can be used to export rich text content to files with a certain format.
+///
+/// Files are by default written to an app's document folder. It can be changed by
+/// providing another directory.
+///
+/// Exported files are default be exported to an app's document folder. This means
+/// that we must give them a unique name to avoid overwriting any existing file. To
+/// achieve this, we use the `uniqueFileUrl` function of the url resolver, which
+/// will add a suffix until a file name is unique.
 public class StandardRichTextExportService: RichTextExportService {
 
-    /**
-     Create a standard rich text export service.
-
-     - Parameters:
-       - urlResolver: The type to use to resolve file urls, by default `FileManager.default`.
-       - directory: The directory to save the file in, by default `.documentDirectory`.
-     */
+    /// Create a standard rich text export service.
+    ///
+    /// - Parameters:
+    ///   - urlResolver: The type to use to resolve file urls, by default `FileManager.default`.
+    ///   - directory: The directory to save the file in, by default `.documentDirectory`.
     public init(
         urlResolver: RichTextExportUrlResolver = FileManager.default,
         directory: FileManager.SearchPathDirectory = .documentDirectory
@@ -36,22 +35,12 @@ public class StandardRichTextExportService: RichTextExportService {
     private let urlResolver: RichTextExportUrlResolver
     private let directory: FileManager.SearchPathDirectory
 
-    /**
-     Generate a file with a certain name, content and format.
-
-     Exported files will by default be exported to the app's
-     document folder, which means that we should give them a
-     unique name to avoid overwriting already existing files.
-
-     To achieve this, we'll use the `uniqueFileUrl` function
-     of the url resolver, which by default will add a suffix
-     until the file name no longer exists.
-
-     - Parameters:
-       - fileName: The preferred name of the exported name.
-       - content: The rich text content to export.
-       - format: The rich text format to use when exporting.
-     */
+    /// Generate an export file with a certain name, content, and format.
+    ///
+    /// - Parameters:
+    ///   - fileName: The preferred name of the exported name.
+    ///   - content: The rich text content to export.
+    ///   - format: The rich text format to use when exporting.
     public func generateExportFile(
         withName fileName: String,
         content: NSAttributedString,
@@ -66,21 +55,11 @@ public class StandardRichTextExportService: RichTextExportService {
         return fileUrl
     }
 
-    /**
-     Generate a PDF file with a certain name and content.
-
-     Exported files will by default be exported to the app's
-     document folder, which means that we should give them a
-     unique name to avoid overwriting already existing files.
-
-     To achieve this, we'll use the `uniqueFileUrl` function
-     of the url resolver, which by default will add a suffix
-     until the file name no longer exists.
-
-     - Parameters:
-       - fileName: The preferred file name.
-       - content: The rich text content to export.
-     */
+    /// Generate a PDF file with a certain name and content.
+    ///
+    /// - Parameters:
+    ///   - fileName: The preferred file name.
+    ///   - content: The rich text content to export.
     public func generatePdfExportFile(
         withName fileName: String,
         content: NSAttributedString

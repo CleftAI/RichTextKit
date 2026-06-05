@@ -8,8 +8,7 @@
 
 import SwiftUI
 
-/// This protocol can be implemented by any rich text values
-/// that can be represented as a label.
+/// This protocol can be implemented by any rich text label values.
 public protocol RichTextLabelValue: Hashable {
 
     /// The value icon.
@@ -29,25 +28,4 @@ public extension RichTextLabelValue {
         )
         .tag(self)
     }
-}
-
-#Preview {
-
-    struct Preview: View {
-
-        @State
-        private var alignment = RichTextAlignment.left
-
-        var body: some View {
-            List {
-                Section("Rich Text Alignment") {
-                    ForEach(RichTextAlignment.allCases) {
-                        $0.label
-                    }
-                }
-            }
-        }
-    }
-
-    return Preview()
 }

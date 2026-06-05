@@ -8,25 +8,20 @@
 
 import Foundation
 
-/**
- This protocol extends ``RichTextReader`` with functionality
- for reading rich text data for the current rich text.
-
- The protocol is implemented by `NSAttributedString` as well
- as other types in the library.
- */
+/// This protocol extends the ``RichTextReader`` protocol to support reading
+/// rich text data for the current rich text.
+///
+/// This protocol is implemented by `NSAttributedString` and other types.
 public protocol RichTextDataReader: RichTextReader {}
 
 extension NSAttributedString: RichTextDataReader {}
 
 public extension RichTextDataReader {
 
-    /**
-     Generate rich text data from the current rich text.
-
-     - Parameters:
-       - format: The data format to use.
-     */
+    /// Generate rich text data from the current rich text.
+    ///
+    /// - Parameters:
+    ///   - format: The data format to use.
     func richTextData(
         for format: RichTextDataFormat
     ) throws -> Data {

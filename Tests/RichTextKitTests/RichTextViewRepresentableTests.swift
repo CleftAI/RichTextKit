@@ -10,7 +10,6 @@
 import RichTextKit
 import XCTest
 
-/*
 final class RichTextViewComponentTests: XCTestCase {
 
     private var view: RichTextView!
@@ -72,7 +71,11 @@ final class RichTextViewComponentTests: XCTestCase {
         XCTAssertTrue(view.allowsEditingTextAttributes)
         XCTAssertEqual(view.autocapitalizationType, .sentences)
         #endif
+        #if os(tvOS)
+        XCTAssertNotEqual(view.backgroundColor, .black)
+        #else
         XCTAssertNotEqual(view.backgroundColor, .clear)
+        #endif
         XCTAssertEqual(view.contentCompressionResistancePriority(for: .horizontal), .defaultLow)
         #if iOS
         XCTAssertEqual(view.spellCheckingType, .no)
@@ -85,5 +88,4 @@ final class RichTextViewComponentTests: XCTestCase {
         #endif
     }
 }
- */
 #endif

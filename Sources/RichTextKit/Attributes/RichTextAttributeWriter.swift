@@ -8,19 +8,15 @@
 
 import Foundation
 
-/**
- This protocol extends ``RichTextWriter`` with functionality
- for writing attributes to the ``RichTextWriter/richText`.
-
- This protocol is implemented by `NSMutableAttributedString`,
- as well as other types in the library.
-
- Note that this protocol used to have a lot of functionality
- for setting various attributes, styles, etc. However, since
- ``RichTextViewComponent`` needs more capabilities, we ended
- up with duplicated code where the writer had functions that
- weren't even used within the library.
- */
+/// This protocol extends the ``RichTextWriter`` protocol to make any type
+/// that implements it able to set ``RichTextReader/richText`` attributes.
+///
+/// This protocol is implemented by `NSAttributedString` and other types in
+/// the library.
+///
+/// > Note: This protocol used to have a lot of functionality. This caused duplicated
+/// code since the ``RichTextViewComponent`` needed to do more. As such,
+/// this protocol is now limited in functionality.
 public protocol RichTextAttributeWriter: RichTextWriter, RichTextAttributeReader {}
 
 extension NSMutableAttributedString: RichTextAttributeWriter {}

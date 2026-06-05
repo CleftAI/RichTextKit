@@ -60,6 +60,8 @@ public extension Image {
 
     static let richTextSuperscriptDecrease = symbol("textformat.subscript")
     static let richTextSuperscriptIncrease = symbol("textformat.superscript")
+
+    static let richTextUnknownValueType = symbol("questionmark")
 }
 
 public extension Image {

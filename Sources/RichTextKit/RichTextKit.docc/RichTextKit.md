@@ -1,13 +1,13 @@
 # ``RichTextKit``
 
-RichTextKit is a Swift SDK that helps you use rich text in Swift and SwiftUI.
+RichTextKit lets you view and edit rich text in `Swift` and `SwiftUI` on all major Apple platforms.
 
 
 ## Overview
 
 ![RichTextKit logo](Logo.png)
 
-RichTextKit is a Swift SDK that helps you use rich text in Swift and SwiftUI.
+RichTextKit is a library that lets you view and edit rich text in Swift and SwiftUI, on all major Apple platforms.
 
 RichTextKit has a multi-platform SwiftUI ``RichTextEditor`` that can be added to any app. The editor supports text styles (bold, italic, underline, etc.), fonts, font sizes, colors, text alignments, image attachments, and much more.
 
@@ -24,12 +24,17 @@ https://github.com/danielsaidi/RichTextKit.git
 ```
 
 
+## Support My Work
+
+You can [become a sponsor][Sponsors] to help me dedicate more time on my various [open-source tools][OpenSource]. Every contribution, no matter the size, makes a real difference in keeping these tools free and actively developed.
+
+
 
 ## Getting started
 
 @Links(visualStyle: detailedGrid) {
     
-    - <doc:Getting-Started>
+    - <doc:Getting-Started-Article>
     - <doc:Demo-Article>
 }
 
@@ -51,7 +56,7 @@ RichTextKit is available under the MIT license.
 
 ### Getting Started
 
-- <doc:Getting-Started>
+- <doc:Getting-Started-Article>
 
 ### Articles
 
@@ -62,11 +67,8 @@ RichTextKit is available under the MIT license.
 
 ### Essentials
 
-These are the top-level types you should start looking at.
-
-- ``RichTextEditor``
 - ``RichTextContext``
-- ``RichTextView``
+- ``RichTextEditor``
 - ``RichTextViewer``
 
 ### Foundation
@@ -82,10 +84,6 @@ These are the top-level types you should start looking at.
 - ``RichTextInsertable``
 - ``RichTextInsertion``
 
-### Alignment
-
-- ``RichTextAlignment``
-
 ### Attributes
 
 - ``RichTextAttribute``
@@ -93,10 +91,11 @@ These are the top-level types you should start looking at.
 - ``RichTextAttributeReader``
 - ``RichTextAttributeWriter``
 
-### Colors
+### Bridging
 
-- ``ColorRepresentable``
-- ``RichTextColor``
+- ``RichTextView``
+- ``RichTextViewComponent``
+- ``RichTextViewRepresentable``
 
 ### Colors
 
@@ -155,13 +154,13 @@ These are the top-level types you should start looking at.
 - ``RichTextKeyboardToolbarMenu``
 - ``RichTextKeyboardToolbarStyle``
 
-### Line
-
-- ``RichTextLine``
-
 ### Localization
 
 - ``RTKL10n``
+
+### Paragraph
+
+- ``NSMutableParagraphStyleValueLabel``
 
 ### Pasteboard
 
@@ -189,9 +188,14 @@ These are the top-level types you should start looking at.
 ### Views
 
 - ``RichTextLabelValue``
-- ``TextViewRepresentable``
 
 
+
+[Email]: mailto:daniel.saidi@gmail.com
+[Website]: https://danielsaidi.com
+[GitHub]: https://github.com/danielsaidi
+[OpenSource]: https://danielsaidi.com/opensource
+[Sponsors]: https://github.com/sponsors/danielsaidi
 
 [License]: https://github.com/danielsaidi/RichTextKit/blob/master/LICENSE
 [Repository]: https://github.com/danielsaidi/RichTextKit

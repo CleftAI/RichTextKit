@@ -9,11 +9,9 @@
 import SwiftUI
 import Combine
 
-/// This enum defines rich text actions that can be executed
-/// on a rich text editor.
+/// This enum defines rich text actions that can be executed on a rich text editor.
 ///
-/// It's also a namespace for action-related types and views,
-/// like ``RichTextAction/Button``.
+/// It's also a namespace for action-related types, like ``RichTextAction/Button``.
 public enum RichTextAction: Identifiable, Equatable, RichTextLabelValue {
 
     /// Copy the currently selected text, if any.
@@ -53,7 +51,7 @@ public enum RichTextAction: Identifiable, Equatable, RichTextLabelValue {
     case selectRange(NSRange)
 
     /// Set the text alignment.
-    case setAlignment(_ alignment: RichTextAlignment)
+    case setAlignment(_ alignment: NSTextAlignment)
 
     /// Set the entire attributed string.
     case setAttributedString(NSAttributedString)
@@ -78,6 +76,9 @@ public enum RichTextAction: Identifiable, Equatable, RichTextLabelValue {
 
     /// Step the line spacing.
     case stepLineSpacing(points: CGFloat)
+
+    /// Set the current paragraph style.
+    case setParagraphStyle(_ style: NSMutableParagraphStyle)
 
     /// Step the superscript level.
     case stepSuperscript(steps: Int)
@@ -111,11 +112,12 @@ public extension RichTextAction {
         case .replaceSelectedText: .richTextReplace
         case .replaceText: .richTextReplace
         case .selectRange: .richTextSelection
-        case .setAlignment(let val): val.icon
+        case .setAlignment(let val): val.defaultIcon
         case .setAttributedString: .richTextDocument
         case .setColor(let color, _): color.icon
         case .setHighlightedRange: .richTextAlignmentCenter
         case .setHighlightingStyle: .richTextAlignmentCenter
+        case .setParagraphStyle: .richTextAlignmentLeft
         case .setStyle(let style, _): style.icon
         case .stepFontSize(let val): .richTextStepFontSize(val)
         case .stepIndent(let val): .richTextStepIndent(val)
@@ -164,11 +166,12 @@ public extension RichTextAction {
         case .replaceSelectedText: .actionDelete
         case .replaceText: .actionDelete
         case .selectRange: .selectRange
-        case .setAlignment(let alignment): alignment.titleKey
+        case .setAlignment(let alignment): alignment.defaultTitleKey
         case .setAttributedString: .setAttributedString
         case .setColor(let color, _): color.titleKey
         case .setHighlightedRange: .highlightedRange
         case .setHighlightingStyle: .highlightingStyle
+        case .setParagraphStyle: .textAlignmentLeft
         case .setStyle(let style, _): style.titleKey
         case .stepFontSize(let points): .actionStepFontSize(points)
         case .stepIndent(let points): .actionStepIndent(points)
